@@ -1,1 +1,75 @@
-<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kréta 2026 – 14 napos térkép</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:40px auto;padding:20px;line-height:1.5}h1{margin-bottom:8px}.box{padding:16px;border:1px solid #ddd;border-radius:12px;margin:16px 0}ul{line-height:1.7}</style></head><body><h1>🇬🇷 Kréta 2026 – 14 napos útiterv</h1><p><b>2026. szeptember 25. – október 8.</b></p><div class="box"><h2>Útvonal</h2><ol><li>Kolymvari – Chania</li><li>Balos – Gramvousa</li><li>Falasarna – Polyrinia</li><li>Elafonissi – Kedrodasos – Chora Sfakion</li><li>Loutro – Glyka Nera</li><li>Samaria vagy Imbros Gorge</li><li>Kourtaliotiko – Preveli – Plakias – Selakano</li><li>Kritsa – Panagia Kera – Lassithi – Dikteon Cave</li><li>Mochlos – Richtis Gorge – Sitia</li><li>Toplou – Vai – Itanos</li><li>Kato Zakros – Zakros Palace – Zakros Gorge</li><li>Spinalonga – Agios Nikolaos – Rethymno</li><li>Arkadi – Eleftherna – Margarites – Rethymno</li><li>Rethymno – Chania repülőtér</li></ol></div><div class="box"><h2>Fő kategóriák</h2><ul><li>🏖️ Strandok és öblök</li><li>🥾 Túrák és természet</li><li>🏛️ Régészet és történelem</li><li>🏘️ Városok és falvak</li><li>⛪ Kolostorok és kultúra</li><li>🪨 Barlangok és különlegességek</li><li>🍷 Gasztronómia és bor</li><li>🏔️ Kilátók és panorámautak</li></ul></div><p>A teljes interaktív térképes változat következik; ez az oldal első tesztje a GitHub Pages publikáláshoz.</p></body></html>
+<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Kréta 2026 – 14 napos interaktív térkép</title><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><style>html,body,#map{height:100%;margin:0}#panel{position:absolute;z-index:1000;top:10px;left:10px;right:10px;max-width:440px;background:#fff;padding:12px;border-radius:12px;box-shadow:0 2px 14px #0004;font:14px Arial}h2{margin:0 0 4px;font-size:18px}select{width:100%;padding:8px;margin:7px 0}.hint{font-size:12px;color:#555}.legend{line-height:1.6}</style></head><body><div id="panel"><h2>🇬🇷 Kréta 2026 – 14 nap</h2><div>09.25–10.08 · Kolymvari → Sfakia → Selakano → Sitia → Rethymno</div><select id="cat"><option value="">Minden kategória</option><option>🏖️ Strandok & öblök</option><option>🥾 Túrák & természet</option><option>🏛️ Régészet & történelem</option><option>🏘️ Városok & falvak</option><option>⛪ Kolostorok & kultúra</option><option>🪨 Barlangok & különlegességek</option><option>🍷 Gasztronómia & bor</option><option>🏔️ Kilátók & scenic drive</option><option>✈️ Repülőtér</option></select><select id="day"><option value="">Minden nap</option><option>D1</option><option>D2</option><option>D3</option><option>D4</option><option>D5</option><option>D6</option><option>D7</option><option>D8</option><option>D9</option><option>D10</option><option>D11</option><option>D12</option><option>D13</option><option>D14</option></select><div class="legend">⭐ kihagyhatatlan · 💎 rejtett gyöngyszem · 🟡 ha belefér · 🧭 útvonalpont</div><div class="hint">A jelölőre koppintva megjelenik a napi javaslat és a kategória.</div></div><div id="map"></div><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>const C={b:'🏖️ Strandok & öblök',t:'🥾 Túrák & természet',a:'🏛️ Régészet & történelem',v:'🏘️ Városok & falvak',m:'⛪ Kolostorok & kultúra',c:'🪨 Barlangok & különlegességek',g:'🍷 Gasztronómia & bor',s:'🏔️ Kilátók & scenic drive',f:'✈️ Repülőtér'};const D=`Chania Old Town|35.516|24.018|v|D1|⭐|Óváros és velencei kikötő
+Balos Lagoon|35.592|23.592|b|D2|⭐|Balos + Gramvousa hajós nap
+Gramvousa|35.613|23.584|b|D2|⭐|Hajós kirándulással
+Falasarna|35.500|23.583|b|D3|⭐|Nyugati parti strand
+Polyrinia|35.463|23.654|a|D3|💎|Ókori városromok
+Elafonissi|35.271|23.539|b|D4|⭐|Korai indulással
+Kedrodasos|35.263|23.537|b|D4|💎|Természetesebb partszakasz
+Loutro|35.199|24.078|v|D5|⭐|Autómentes nap
+Samaria Gorge|35.311|23.922|t|D6|⭐|Egész napos túra, időjárásfüggő
+Imbros Gorge|35.213|24.174|t|D6|🟡|Samaria alternatívája
+Kourtaliotiko Gorge|35.180|24.462|t|D7|⭐|Szurdok
+Preveli Beach|35.151|24.476|b|D7|⭐|Pálmaliget + strand
+Kritsa|35.163|25.646|v|D8|💎|Hegyi falu
+Panagia Kera Church|35.164|25.648|m|D8|⭐|Bizánci freskók
+Lato|35.180|25.650|a|D8|⭐|Ókori város panorámával
+Lassithi Plateau|35.186|25.487|t|D8|⭐|Hegyi fennsík
+Dikteon Cave|35.163|25.454|c|D8|🟡|Mitológiai barlang
+Richtis Gorge|35.137|26.102|t|D9|⭐|Vízeséses túra
+Mochlos|35.195|25.946|v|D9|💎|Tengerparti falu
+Mochlos waterfront|35.195|25.946|b|D9|💎|Parti séta és tavernák
+Gournia Archaeological Site|35.108|25.802|a|D9|💎|Minószi település
+Toplou Monastery|35.207|26.215|m|D10|⭐|Erődített kolostor
+Vai Palm Beach|35.256|26.261|b|D10|⭐|Pálmaliget
+Itanos|35.276|26.263|a|D10|💎|Ókori romok
+Kato Zakros|35.096|26.264|b|D11|⭐|Keleti öböl
+Zakros Palace|35.095|26.261|a|D11|⭐|Minószi palota
+Zakros Gorge|35.095|26.264|t|D11|⭐|A Halottak völgye
+Valley of the Dead viewpoint|35.101|26.277|t|D11|💎|Rövidebb szakaszok is járhatók
+Xerokampos|35.039|26.221|b|D11|💎|Vadabb keleti part
+Xerokampos Mazida Ammos|35.041|26.223|b|D11|💎|Csendes partszakasz
+Spinalonga|35.293|25.738|a|D12|⭐|Erődített sziget
+Elounda|35.257|25.716|v|D12|🟡|Spinalonga mellé
+Agios Nikolaos|35.191|25.713|v|D12|⭐|Voulismeni-tó
+Voulisma Beach|35.125|25.742|b|D12|🟡|Világos homokos strand
+Rethymno Old Town|35.369|24.473|v|D12|⭐|Óváros
+Arkadi Monastery|35.241|24.629|m|D13|⭐|Történelmi kolostor
+Eleftherna|35.343|24.630|a|D13|🟡|Régészet + múzeum
+Eleftherna Museum|35.343|24.630|a|D13|🟡|Lelőhely múzeuma
+Margarites|35.344|24.688|v|D13|💎|Fazekasfalu
+Margarites pottery walk|35.344|24.688|v|D13|💎|Fazekasműhelyek és séta
+Argyroupoli Springs|35.284|24.337|t|D13|💎|Források és vízesések
+Mili Gorge|35.340|24.509|t|D13|💎|Zöld, rövid-közepes túra
+Patsos Gorge|35.267|24.620|t|D13|💎|Kisebb zöld szurdok
+Amari Valley|35.222|24.674|s|D13|💎|Hegyi-völgyi táj
+Arkadi countryside|35.241|24.629|s|D13|💎|Vidéki útvonal
+Chania Airport|35.531|24.149|f|D14|🧭|Hazautazás
+Vamos|35.409|24.196|v|D1|💎|Hagyományos falu
+Therisso Gorge|35.418|23.945|t|D1|💎|Festői hegyi út és séta
+Souda Peninsula / Marathi|35.501|24.174|b|D1|💎|Védett öblök
+Stavros|35.588|24.092|b|D1|🟡|Akrotiri öböl
+Tersanas|35.570|24.096|b|D1|💎|Kis öböl
+Milia Mountain Retreat|35.430|23.717|g|D3|💎|Hegyi környezet, helyi gasztronómia
+Manousakis Winery|35.477|23.817|g|D3|💎|Borászat és kóstoló
+Vouves Ancient Olive Tree|35.493|23.787|g|D3|💎|Ősi olajfa
+Rokka Gorge / Village|35.469|23.761|t|D3|💎|Szurdokfalus felfedezés
+Loutro Coastal Walk|35.195|24.073|t|D5|⭐|Gyalogos felfedezés
+Glyka Nera|35.203|24.095|b|D5|⭐|Hajóval vagy gyalog
+Aradena Gorge|35.190|24.055|t|D6|💎|Vadabb szurdok, tapasztaltaknak
+Kallikratis Plateau|35.201|24.181|s|D6|💎|Hegyi út és fennsík
+Lakkos / Sfakia villages|35.210|24.150|v|D6|💎|Kis falvak és hegyi táj
+Frangokastello Beach|35.080|24.735|b|D6|🟡|Erőd melletti strand
+Agia Galini|35.097|24.689|v|D7|💎|Déli kikötőváros
+Triopetra Beach|35.119|24.538|b|D7|💎|Déli nyílt partszakasz
+Agios Pavlos Sandhills|35.104|24.571|b|D7|💎|Homokdűnék
+Zaros Lake|35.137|24.905|t|D8|💎|Tóparti séta
+Rouvas Gorge|35.118|24.868|t|D8|💎|Hosszabb természetjárás
+Neapoli|35.256|25.604|v|D8|💎|Kevésbé turistás kitérő
+Tzermiado|35.207|25.489|v|D8|💎|Lassithi-fennsík faluja
+Kastelli Lasithi|35.190|25.459|v|D8|💎|Helyi hangulat
+Lastros|35.132|25.930|v|D9|💎|Hegyi falu Sitia felé
+Azogyre / South Sitia coast|35.050|25.950|s|D11|💎|Csendesebb délkeleti táj
+Kato Zakros village walk|35.096|26.264|t|D11|💎|Part és palota közti séta
+Koufonisi boat trip area|34.940|25.700|b|D11|💎|Hajós kirándulás, menetrendfüggő
+Lefka Ori viewpoint|35.292|24.150|s|D6|💎|Fehér-hegységi panoráma
+` .trim().split('\n').map(x=>{let a=x.split('|');return{n:a[0],lat:+a[1],lon:+a[2],c:C[a[3]],d:a[4],p:a[5],x:a[6]}});const map=L.map('map').setView([35.2,25.0],9);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);let ms=[];function draw(){ms.forEach(m=>map.removeLayer(m));ms=[];let c=document.getElementById('cat').value,d=document.getElementById('day').value;D.forEach(p=>{if(c&&p.c!==c)return;if(d&&!p.d.includes(d))return;let m=L.marker([p.lat,p.lon]).addTo(map).bindPopup('<b>'+p.p+' '+p.n+'</b><br>'+p.c+'<br><b>'+p.d+'</b><br>'+p.x);ms.push(m)})}document.getElementById('cat').onchange=draw;document.getElementById('day').onchange=draw;draw();</script></body></html>
