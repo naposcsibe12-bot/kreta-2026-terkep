@@ -1,4 +1,4 @@
-name: Kreta 2026 mobile build
+name: Kreta 2026 iOS build
 
 on:
   push:
@@ -8,26 +8,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  web-and-android:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: mobile
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - run: npm install
-      - run: npm run check
-      - run: npx cap add android
-      - run: npx cap sync android
-      - run: cd android && ./gradlew assembleDebug
-      - uses: actions/upload-artifact@v4
-        with:
-          name: kreta-2026-android-debug
-          path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
-
   ios-project-validation:
     runs-on: macos-latest
     defaults:
@@ -38,8 +18,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci
       - run: npm run check
       - run: npx cap add ios
       - run: npx cap sync ios
-      - run: xcodebuild -workspace ios/App/App.xcworkspace -scheme App -sdk iphonesimulator -configuration Debug -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+      - name: Build iOS Simulator app
+        run: xcodebuild -workspace ios/App/App.xcworkspace -scheme App -sdk iphonesimulator -configuration Debug -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+      - name: Package simulator app
+        run: |
+          mkdir -p artifacts
+          APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -path '*/Build/Products/Debug-iphonesimulator/App.app' -type d -print -quit)
+          test -n "$APP_PATH"
+          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" artifacts/Kreta-2026-iOS-Simulator.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Kreta-2026-iOS-Simulator
+          path: mobile/artifacts/Kreta-2026-iOS-Simulator.zip
