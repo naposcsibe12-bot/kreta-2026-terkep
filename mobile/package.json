@@ -4,9 +4,10 @@
   "private": true,
   "description": "Kréta 2026 offline térképes iOS/Android alkalmazás",
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "build:web": "vite build",
     "check:offline": "node scripts/check-offline.mjs",
-    "check": "npm run check:offline && npm run build:web",
+    "check": "npm run typecheck && npm run check:offline && npm run build:web",
     "sync": "npm run build:web && npx cap sync",
     "open:ios": "npx cap open ios",
     "open:android": "npx cap open android"
