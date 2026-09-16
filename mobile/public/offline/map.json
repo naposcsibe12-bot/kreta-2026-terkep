@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "id": "kreta-vector",
+  "filename": "kreta.pmtiles",
+  "format": "pmtiles",
+  "minzoom": 6,
+  "maxzoom": 14,
+  "region": "Crete, Greece",
+  "status": "optional-binary",
+  "sourceLayers": ["water", "landuse", "transportation"],
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "The binary PMTiles package is intentionally distributed separately until a licensed/self-generated dataset is supplied."
+}
