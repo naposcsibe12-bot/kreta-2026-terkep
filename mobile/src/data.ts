@@ -3,7 +3,7 @@ export type Poi = { id:string; name:string; lat:number; lon:number; cat:Category
 export type Base = { id:string; name:string; lat:number; lon:number; from:number; to:number };
 
 export const BASES: Base[] = [
- {id:'kolymvari',name:'Kolymvari',lat:35.528,lon:24.222,from:1,to:3},
+ {id:'kolymvari',name:'Kolymvari',lat:35.542,lon:23.779,from:1,to:3},
  {id:'sfakion',name:'Chora Sfakion',lat:35.199,lon:24.137,from:4,to:6},
  {id:'selakano',name:'Selakano',lat:35.093,lon:25.544,from:7,to:8},
  {id:'sitia',name:'Sitia / Papoura',lat:35.209,lon:26.105,from:9,to:11},
