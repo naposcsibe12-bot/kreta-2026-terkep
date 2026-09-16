@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 22
       - run: npm install
-      - run: npm run build:web
+      - run: npm run check
       - run: npx cap add android
       - run: npx cap sync android
       - run: cd android && ./gradlew assembleDebug
@@ -39,7 +39,7 @@ jobs:
         with:
           node-version: 22
       - run: npm install
-      - run: npm run build:web
+      - run: npm run check
       - run: npx cap add ios
       - run: npx cap sync ios
       - run: xcodebuild -workspace ios/App/App.xcworkspace -scheme App -sdk iphonesimulator -configuration Debug -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
