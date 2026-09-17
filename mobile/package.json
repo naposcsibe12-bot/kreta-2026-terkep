@@ -2,15 +2,14 @@
   "name": "kreta-2026-mobile",
   "version": "1.0.0",
   "private": true,
-  "description": "Kréta 2026 offline térképes iOS/Android alkalmazás",
+  "description": "Kréta 2026 offline térképes iOS alkalmazás",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build:web": "vite build",
     "check:offline": "node scripts/check-offline.mjs",
     "check": "npm run typecheck && npm run check:offline && npm run build:web",
-    "sync": "npm run build:web && npx cap sync",
-    "open:ios": "npx cap open ios",
-    "open:android": "npx cap open android"
+    "sync": "npm run build:web && npx cap sync ios",
+    "open:ios": "npx cap open ios"
   },
   "dependencies": {
     "@capacitor/core": "^7.4.3",
