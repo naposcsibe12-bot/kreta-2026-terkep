@@ -5,6 +5,7 @@
   "description": "Kréta 2026 offline térképes iOS alkalmazás",
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "prepare:offline": "bash scripts/prepare-offline-map.sh",
     "build:web": "vite build",
     "check:offline": "node scripts/check-offline.mjs",
     "check": "npm run typecheck && npm run check:offline && npm run build:web",
