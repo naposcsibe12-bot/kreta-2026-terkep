@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
@@ -11,9 +11,11 @@ if (manifest.format !== 'pmtiles') throw new Error('Offline format must be PMTil
 if (!Array.isArray(manifest.sourceLayers) || manifest.sourceLayers.length === 0) throw new Error('sourceLayers must be non-empty');
 if (manifest.minzoom > manifest.maxzoom) throw new Error('Invalid zoom range');
 const expected = resolve(root, 'public/offline', manifest.filename);
-const installed = existsSync(expected);
+if (!existsSync(expected) || statSync(expected).size < 1024) {
+  throw new Error(`Offline PMTiles is missing or invalid: ${manifest.filename}. Run npm run prepare:offline first.`);
+}
 const source = readFileSync(mainPath, 'utf8');
 if (!source.includes('offline/map.json')) throw new Error('Runtime does not load the offline manifest');
 if (!source.includes('manifest.filename')) throw new Error('Runtime does not use manifest filename');
 console.log(`Offline manifest OK: ${manifest.region}, zoom ${manifest.minzoom}-${manifest.maxzoom}`);
-console.log(installed ? `Offline PMTiles present: ${manifest.filename}` : `Offline PMTiles not bundled yet: ${manifest.filename}`);
+console.log(`Offline PMTiles present: ${manifest.filename} (${statSync(expected).size} bytes)`);
