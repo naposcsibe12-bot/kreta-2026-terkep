@@ -142,12 +142,18 @@ async function initOsm(){
  try{
   if(typeof maplibregl==='undefined'||typeof pmtiles==='undefined') throw new Error('A helyi térképkönyvtár hiányzik.');
   const protocol=new pmtiles.Protocol({metadata:true}); osmProtocol=protocol; maplibregl.addProtocol('pmtiles',protocol.tile);
-  const localUrl='./offline-assets/crete.pmtiles'; const p=new pmtiles.PMTiles(localUrl); protocol.add(p);
-  const meta=await p.getMetadata(); const layers=(meta.vector_layers||[]).map(function(x){return x.id});
-  osmMap=new maplibregl.Map({container:'mapCanvas',center:[24.9,35.2],zoom:8,maxZoom:14,style:{version:8,sources:{osm:{type:'vector',url:'pmtiles://'+localUrl,attribution:'© OpenStreetMap contributors'}},layers:styleForOsm(layers)},attributionControl:true,dragRotate:false,touchPitch:false});
-  osmMap.on('load',function(){osmReady=true;renderMap();});
+  const localUrl=new URL('./offline-assets/crete.pmtiles',location.href).href;
+  const p=new pmtiles.PMTiles(localUrl); protocol.add(p);
+  const meta=await p.getMetadata();
+  const layers=(meta.vector_layers||[]).map(function(x){return x.id});
+  if(!layers.length) throw new Error('A PMTiles metaadata nem tartalmaz vector_layers rétegeket.');
+  const styleLayers=styleForOsm(layers);
+  if(!styleLayers.length) throw new Error('A PMTiles rétegei nem illeszkednek a térképstílushoz: '+layers.join(', '));
+  osmMap=new maplibregl.Map({container:'mapCanvas',center:[24.9,35.2],zoom:8,minZoom:5,maxZoom:13,style:{version:8,sources:{osm:{type:'vector',url:'pmtiles://'+localUrl,attribution:'© OpenStreetMap contributors',minzoom:0,maxzoom:13}},layers:styleLayers},attributionControl:true,dragRotate:false,touchPitch:false});
+  osmMap.on('load',function(){osmReady=true;renderMap();document.getElementById('info').innerHTML='<h3>🗺️ Offline OSM térkép</h3><p>Az OSM-alaptérkép és a 188 saját látnivaló internet nélkül használható.</p>';});
  }catch(e){
-  osmReady=false;document.getElementById('info').innerHTML='<h3>🗺️ Offline OSM térkép</h3><p>A helyi OSM térképadat még nincs a csomagban. A látnivalók ettől függetlenül offline megmaradnak.</p>';
+  console.error('Offline OSM hiba',e);
+  osmReady=false;document.getElementById('info').innerHTML='<h3>⚠️ Offline OSM térkép hiba</h3><p>'+String(e&&e.message||e)+'</p><p>A látnivalók ettől függetlenül offline megmaradnak.</p>';
  }
 }
 function fitPoints(points){
