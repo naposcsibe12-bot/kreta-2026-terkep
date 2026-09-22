@@ -1,0 +1,10 @@
+{
+  "name":"Kréta 2026 · Offline",
+  "short_name":"Kréta 2026",
+  "start_url":"./offline.html",
+  "display":"standalone",
+  "background_color":"#eef2f4",
+  "theme_color":"#12384a",
+  "lang":"hu",
+  "description":"Kréta 2026 teljes látnivaló-, tervező- és útvonalcsomag iPhone-ra internet nélkül."
+}
