@@ -2,7 +2,7 @@
   "source": "https://build.protomaps.com/20260922.pmtiles",
   "region": "Crete",
   "bbox": [23.15, 34.72, 26.78, 35.72],
-  "maxzoom": 13,
+  "maxzoom": 15,
   "format": "PMTiles / Shortbread",
   "attribution": "© OpenStreetMap contributors"
 }
