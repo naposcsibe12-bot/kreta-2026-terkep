@@ -20,7 +20,8 @@ jobs:
       - name: Install PMTiles CLI
         run: |
           go install github.com/protomaps/go-pmtiles@latest
-          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+          test -x "$(go env GOPATH)/bin/pmtiles"
+          echo "PMTiles installed at $(go env GOPATH)/bin/pmtiles"
 
       - name: Find latest Protomaps OSM build
         id: source
