@@ -200,7 +200,7 @@ document.getElementById('googleOfflineBtn').onclick=function(){
   document.addEventListener('visibilitychange',function(){if(document.hidden){left=false;clearTimeout(timer)}},{once:true});
   window.location.href=appUrl;
 };
-if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('./offline-sw.js',{scope:'./'}).catch(function(){})});
+if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('./offline-sw.js',{scope:'./'}).then(function(reg){return reg.update()}).catch(function(){})});
 refreshAll();
 initOsm();
 </script>
