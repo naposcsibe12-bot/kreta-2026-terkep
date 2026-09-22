@@ -32,6 +32,7 @@ body{overflow:hidden}
 .ctrl.active{background:var(--nav);color:#fff;border-color:var(--nav)}
 .mapActions{display:flex;gap:5px;padding:6px;border-top:1px solid var(--line)}
 .mapActions button{flex:1;border:1px solid #d6dee3;background:#fff;border-radius:8px;padding:7px 3px;font-size:8px;font-weight:900}
+.googleHint{margin:7px 0 0;background:#eef5f7;border-radius:8px;padding:8px;font-size:9px;line-height:1.35}.googleHint b{font-size:10px}
 .info{position:absolute;left:8px;right:8px;bottom:8px;max-height:34%;overflow:auto;background:#fff;border-radius:12px;box-shadow:0 3px 18px #0004;padding:9px}
 .info h3{margin:0 0 3px;font-size:14px}.info p{margin:0 0 5px;font-size:10px;color:#65737c}
 .item{display:inline-block;vertical-align:top;width:calc(50% - 5px);padding:6px;margin:2px;border:1px solid #e1e6e9;border-radius:8px;font-size:9px}
@@ -78,8 +79,9 @@ body{overflow:hidden}
 <div id="days" class="days"></div>
 <div id="cats" class="cats"></div>
 <div class="mapActions"><button id="allBtn">🗺️ Mind</button><button id="flexBtn">💎 Rugalmas</button><button id="stayBtn">🏠 Szállások</button><button id="gpsBtn">📍 Helyzet</button></div>
+<div class="mapActions"><button id="googleOfflineBtn">🗺️ Google Maps offline</button></div>
 </div>
-<div id="info" class="info"></div>
+<div id="info" class="info"><h3>🗺️ Offline térképcsomag</h3><p>A saját térképréteg és a 188 látnivaló internet nélkül működik. A valódi Google Maps offline térképet az iPhone Google Maps alkalmazásában kell letölteni.</p><div class="googleHint"><b>Google Maps offline használat</b><br>Google Maps → profilkép → <b>Offline térképek</b> → <b>Válassza ki a saját térképét</b>, majd jelöld ki Kréta teljes területét és töltsd le. Ezután a fenti „Google Maps offline” gombbal az alkalmazásba ugorhatsz.</div></div>
 </div>
 </section>
 <section id="plan" class="screen"><div id="planOverlay" class="overlay"></div></section>
@@ -140,6 +142,14 @@ document.getElementById('allBtn').onclick=function(){state.day=0;state.cat='';st
 document.getElementById('flexBtn').onclick=function(){state.day=0;state.cat='';state.mode='flex';refreshAll()};
 document.getElementById('stayBtn').onclick=function(){state.day=0;state.cat='';state.mode='stays';refreshAll()};
 document.getElementById('gpsBtn').onclick=function(){if(!navigator.geolocation){alert('A helymeghatározás nem érhető el.');return}navigator.geolocation.getCurrentPosition(function(pos){drawBase();const q=project(pos.coords.latitude,pos.coords.longitude);svgEl('circle',{cx:q.x,cy:q.y,r:9,fill:'#1565c0',stroke:'#fff','stroke-width':3},document.getElementById('svg'));document.getElementById('info').innerHTML='<h3>📍 Saját helyzet</h3><p>'+pos.coords.latitude.toFixed(5)+', '+pos.coords.longitude.toFixed(5)+'<br>±'+Math.round(pos.coords.accuracy)+' m</p>'},function(e){alert('A GPS-helyzet nem érhető el: '+e.message)},{enableHighAccuracy:true,timeout:10000,maximumAge:5000})};
+document.getElementById('googleOfflineBtn').onclick=function(){
+  const appUrl='comgooglemaps://?center=35.2,24.9&zoom=8&mapmode=standard';
+  const webUrl='https://www.google.com/maps/@35.2,24.9,8z';
+  let left=true;
+  const timer=setTimeout(function(){if(left){window.location.href=webUrl}},900);
+  document.addEventListener('visibilitychange',function(){if(document.hidden){left=false;clearTimeout(timer)}},{once:true});
+  window.location.href=appUrl;
+};
 if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('./offline-sw.js',{scope:'./'}).catch(function(){})});
 refreshAll();
 </script>
