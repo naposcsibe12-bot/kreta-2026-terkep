@@ -48,6 +48,21 @@ jobs:
           test -s offline-assets/crete.pmtiles
           ls -lh offline-assets/crete.pmtiles
 
+      - name: Verify PMTiles archive and save metadata
+        run: |
+          set -euo pipefail
+          pmtiles verify offline-assets/crete.pmtiles
+          pmtiles show offline-assets/crete.pmtiles --metadata > offline-assets/osm-tile-metadata.json
+          python - <<'PY'
+          import json
+          p='offline-assets/osm-tile-metadata.json'
+          data=json.load(open(p,encoding='utf-8'))
+          layers=[x.get('id') for x in data.get('vector_layers',[])]
+          print('PMTiles layers:', ', '.join(layers))
+          assert layers, 'No vector_layers found in PMTiles metadata'
+          assert 'roads' in layers and 'water' in layers, 'Expected Protomaps roads/water layers are missing'
+          PY
+
       - name: Bundle offline map libraries
         run: |
           set -euo pipefail
