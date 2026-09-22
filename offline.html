@@ -150,7 +150,8 @@ async function initOsm(){
   const buffer=await resp.arrayBuffer();
   if(buffer.byteLength<127) throw new Error('A helyi OSM PMTiles fájl túl kicsi vagy sérült.');
   const file=new File([buffer],'crete.pmtiles',{type:'application/octet-stream'});
-  const p=new pmtiles.PMTiles(file);
+  const fileSource=new pmtiles.FileSource(file);
+  const p=new pmtiles.PMTiles(fileSource);
   const protocol=new pmtiles.Protocol({metadata:true}); osmProtocol=protocol; maplibregl.addProtocol('pmtiles',protocol.tile);
   protocol.add(p);
   const meta=await p.getMetadata();
