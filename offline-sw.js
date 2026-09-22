@@ -1,4 +1,4 @@
-const CACHE='kreta2026-offline-v4';
+const CACHE='kreta2026-offline-v5';
 const STATIC_ASSETS=[
   './offline.html',
   './offline-manifest.webmanifest',
