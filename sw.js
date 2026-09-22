@@ -1,4 +1,4 @@
-const CACHE='kreta2026-v12';
+const CACHE='kreta2026-v13';
 const ASSETS=['./','./app.html','./index.html','./tervezo.html','./ajanlo.html','./manifest.webmanifest'];
 self.addEventListener('install',e=>e.waitUntil(
   caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())
