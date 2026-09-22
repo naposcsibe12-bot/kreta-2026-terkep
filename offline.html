@@ -135,7 +135,8 @@ function styleForOsm(layers){
  if(has('roads'))out.push({id:'roads',type:'line',source:'osm','source-layer':'roads',paint:{'line-color':'#f0ede5','line-width':1.15,'line-opacity':1}});
  if(has('boundaries'))out.push({id:'boundaries',type:'line',source:'osm','source-layer':'boundaries',paint:{'line-color':'#89959d','line-width':0.8,'line-opacity':0.55,'line-dasharray':[3,2]}});
  if(has('buildings'))out.push({id:'buildings',type:'fill',source:'osm','source-layer':'buildings',minzoom:11,paint:{'fill-color':'#d6d1c8','fill-opacity':0.5}});
- if(has('places'))out.push({id:'places',type:'symbol',source:'osm','source-layer':'places',layout:{'text-field':'{name}','text-size':11},paint:{'text-color':'#4f5d66','text-halo-color':'#ffffff','text-halo-width':1.2}});
+ // Deliberately omit text/label layers: MapLibre would require a remote glyphs
+ // source, which would break the strict offline requirement.
  return out
 }
 async function initOsm(){
