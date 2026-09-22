@@ -3,11 +3,11 @@ export type Poi = { id:string; name:string; lat:number; lon:number; cat:Category
 export type Base = { id:string; name:string; lat:number; lon:number; from:number; to:number };
 
 export const BASES: Base[] = [
- {id:'kolymvari',name:'Kolymvari',lat:35.542,lon:23.779,from:1,to:3},
- {id:'sfakion',name:'Chora Sfakion',lat:35.199,lon:24.137,from:4,to:6},
- {id:'selakano',name:'Selakano',lat:35.093,lon:25.544,from:7,to:8},
- {id:'sitia',name:'Sitia / Papoura',lat:35.209,lon:26.105,from:9,to:11},
- {id:'rethymno',name:'Rethymno',lat:35.369,lon:24.473,from:12,to:14}
+ {id:'ag',name:'A&G Apartments',lat:35.538668,lon:23.778278,from:1,to:3},
+ {id:'avra',name:'Avra Sfakia Apartments',lat:35.200516,lon:24.141693,from:4,to:6},
+ {id:'gonies',name:'Apartments Gonies – Athina',lat:35.232600,lon:25.439928,from:7,to:8},
+ {id:'itida',name:'Stefania Suite – Itida Suites',lat:35.200502,lon:26.104514,from:9,to:11},
+ {id:'whiteswan',name:'White Swan',lat:35.365166,lon:24.488117,from:12,to:14}
 ];
 
 export const POIS: Poi[] = [
