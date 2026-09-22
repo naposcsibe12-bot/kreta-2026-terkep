@@ -53,7 +53,7 @@ jobs:
           set -euo pipefail
           TMP="$(mktemp -d)"
           npm --prefix "$TMP" init -y >/dev/null 2>&1
-          npm --prefix "$TMP" install --no-audit --no-fund maplibre-gl@5.6.0 pmtiles@4.2.0
+          npm --prefix "$TMP" install --no-audit --no-fund maplibre-gl@5.6.0 pmtiles@4.5.0
           cp "$TMP/node_modules/maplibre-gl/dist/maplibre-gl.js" offline-assets/maplibre-gl.js
           cp "$TMP/node_modules/maplibre-gl/dist/maplibre-gl.css" offline-assets/maplibre-gl.css
           cp "$TMP/node_modules/pmtiles/dist/pmtiles.js" offline-assets/pmtiles.js
