@@ -26,13 +26,13 @@ body{overflow:hidden}
 .screen.active{display:block}
 .mapWrap{position:absolute;inset:0;background:#c8dde6}.mapCanvas{position:absolute;inset:0}.mapAttribution{position:absolute;z-index:7;right:5px;bottom:5px;background:rgba(255,255,255,.9);border-radius:4px;padding:2px 5px;font-size:8px;color:#3f4d54}.mapAttribution a{color:#345b6d}
 .mapSvg{display:block;width:100%;height:100%}
-.mapPanel{position:absolute;left:8px;right:8px;top:8px;background:#fff;border-radius:13px;box-shadow:0 3px 18px #0004;overflow:hidden;max-height:46dvh;overflow-y:auto}.mapPanel::-webkit-scrollbar{width:4px}.mapPanel::-webkit-scrollbar-thumb{background:#b8c4ca;border-radius:4px}.townLabel{background:rgba(255,255,255,.88);border:1px solid rgba(90,105,112,.35);border-radius:5px;padding:2px 4px;box-shadow:0 1px 3px #0002;font-size:10px;font-weight:800;white-space:nowrap;color:#31424b;pointer-events:none}.maplibregl-ctrl-top-right{top:8px;right:8px}.maplibregl-ctrl-group{box-shadow:0 2px 7px #0003!important;border-radius:9px!important;overflow:hidden}.maplibregl-ctrl-group button{width:40px!important;height:40px!important}.maplibregl-ctrl-scale{font-size:9px;padding:2px 4px;background:rgba(255,255,255,.9);border-radius:4px}
+.mapPanel{position:absolute;left:8px;right:8px;top:54px;background:#fff;border-radius:13px;box-shadow:0 3px 18px #0004;overflow:hidden;max-height:46dvh;overflow-y:auto}.mapPanel::-webkit-scrollbar{width:4px}.mapPanel::-webkit-scrollbar-thumb{background:#b8c4ca;border-radius:4px}.townLabel{background:rgba(255,255,255,.88);border:1px solid rgba(90,105,112,.35);border-radius:5px;padding:2px 4px;box-shadow:0 1px 3px #0002;font-size:10px;font-weight:800;white-space:nowrap;color:#31424b;pointer-events:none}.maplibregl-ctrl-top-right{top:8px;right:8px}.maplibregl-ctrl-group{box-shadow:0 2px 7px #0003!important;border-radius:9px!important;overflow:hidden}.maplibregl-ctrl-group button{width:40px!important;height:40px!important}.maplibregl-ctrl-scale{font-size:9px;padding:2px 4px;background:rgba(255,255,255,.9);border-radius:4px}
 .days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:7px}
 .cats{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;padding:6px;border-top:1px solid var(--line);max-height:118px;overflow:auto}
 .ctrl{border:1px solid #d6dee3;background:#fff;border-radius:7px;padding:7px 3px;font-size:9px;font-weight:900}
 .ctrl.active{background:var(--nav);color:#fff;border-color:var(--nav)}
 .mapActions{display:flex;gap:5px;padding:6px;border-top:1px solid var(--line)}
-.mapActions button{flex:1;border:1px solid #d6dee3;background:#fff;border-radius:8px;padding:7px 3px;font-size:8px;font-weight:900}.legendToggles{position:absolute;z-index:30;right:8px;top:118px;display:flex;flex-direction:column;gap:6px}.legendToggle{border:1px solid #cbd6dc;background:rgba(255,255,255,.96);border-radius:10px;box-shadow:0 2px 9px #0003;padding:8px 10px;font-size:10px;font-weight:900;color:#12384a;min-width:82px}.legendToggle.active{background:#12384a;color:#fff;border-color:#12384a}.mapPanel.collapsed,.info.collapsed{display:none!important}@media(max-width:700px){.legendToggles{top:112px;right:7px}.legendToggle{padding:9px 10px;font-size:10px;min-width:82px}}
+.mapActions button{flex:1;border:1px solid #d6dee3;background:#fff;border-radius:8px;padding:7px 3px;font-size:8px;font-weight:900}.mapTools{position:absolute;z-index:40;left:8px;top:8px;display:flex;gap:6px}.mapTool{border:1px solid #b9c8cf;background:rgba(255,255,255,.98);border-radius:10px;box-shadow:0 2px 9px #0004;padding:9px 12px;font-size:10px;font-weight:900;color:#12384a;white-space:nowrap}.mapTool.active{background:#12384a;color:#fff;border-color:#12384a}.mapPanel.collapsed,.info.collapsed{display:none!important}.legendClose{border:0;background:transparent;color:#12384a;font-weight:900;font-size:11px;float:right;padding:4px 2px;margin:-2px -2px 2px 8px}.panelTitle{font-size:10px;font-weight:900;color:#52636d;padding:7px 9px 0}.info{z-index:25}@media(max-width:700px){.mapTools{left:7px;top:7px}.mapTool{padding:9px 11px;font-size:10px}.mapPanel{top:54px}}
 .googleHint{margin:7px 0 0;background:#eef5f7;border-radius:8px;padding:8px;font-size:9px;line-height:1.35}.googleHint b{font-size:10px}
 .info{position:absolute;left:8px;right:8px;bottom:8px;max-height:34%;overflow:auto;background:#fff;border-radius:12px;box-shadow:0 3px 18px #0004;padding:9px}
 .info h3{margin:0 0 3px;font-size:14px}.info p{margin:0 0 5px;font-size:10px;color:#65737c}
@@ -75,14 +75,14 @@ body{overflow:hidden}
 <main class="view">
 <section id="map" class="screen active">
 <div class="mapWrap">
-<div id="mapCanvas" class="mapCanvas"></div><svg id="svg" class="mapSvg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" style="display:none"></svg><div class="mapAttribution">© OpenStreetMap contributors · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">ODbL</a></div><div class="legendToggles"><button id="topLegendBtn" class="legendToggle" aria-expanded="false">☰ Rétegek</button><button id="bottomLegendBtn" class="legendToggle" aria-expanded="false">ⓘ Infó</button></div>
-<div class="mapPanel collapsed" id="mapPanel">
+<div id="mapCanvas" class="mapCanvas"></div><svg id="svg" class="mapSvg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" style="display:none"></svg><div class="mapAttribution">© OpenStreetMap contributors · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">ODbL</a></div><div class="mapTools"><button id="topLegendBtn" class="mapTool" aria-expanded="false">☰ Jelmagyarázat</button><button id="bottomLegendBtn" class="mapTool" aria-expanded="false">ⓘ Infó</button></div>
+<div class="mapPanel collapsed" id="mapPanel"><div class="panelTitle">JELMAGYARÁZAT ÉS SZŰRŐK <button id="closeTopLegend" class="legendClose">✕ Bezár</button></div>
 <div id="days" class="days"></div>
 <div id="cats" class="cats"></div>
 <div class="mapActions"><button id="allBtn">🗺️ Mind</button><button id="flexBtn">💎 Rugalmas</button><button id="stayBtn">🏠 Szállások</button><button id="gpsBtn">📍 Helyzet</button></div><div class="mapActions"><button id="creteBtn">🏝️ Kréta egész</button><button id="detailBtn">🔍 Részletes nézet</button></div>
 <div class="mapActions"><button id="googleOfflineBtn">🗺️ Google Maps offline</button></div>
 </div>
-<div id="info" class="info collapsed"><h3>🗺️ Offline térképcsomag</h3><p>A saját térképréteg és a 188 látnivaló internet nélkül működik. A valódi Google Maps offline térképet az iPhone Google Maps alkalmazásában kell letölteni.</p><div class="googleHint"><b>Google Maps offline használat</b><br>Google Maps → profilkép → <b>Offline térképek</b> → <b>Válassza ki a saját térképét</b>, majd jelöld ki Kréta teljes területét és töltsd le. Ezután a fenti „Google Maps offline” gombbal az alkalmazásba ugorhatsz.</div></div>
+<div id="info" class="info collapsed"><button id="closeBottomLegend" class="legendClose">✕ Bezár</button><h3>🗺️ Offline térképcsomag</h3><p>A saját térképréteg és a 188 látnivaló internet nélkül működik. A valódi Google Maps offline térképet az iPhone Google Maps alkalmazásában kell letölteni.</p><div class="googleHint"><b>Google Maps offline használat</b><br>Google Maps → profilkép → <b>Offline térképek</b> → <b>Válassza ki a saját térképét</b>, majd jelöld ki Kréta teljes területét és töltsd le. Ezután a fenti „Google Maps offline” gombbal az alkalmazásba ugorhatsz.</div></div>
 </div>
 </section>
 <section id="plan" class="screen"><div id="planOverlay" class="overlay"></div></section>
@@ -227,10 +227,12 @@ function setLegendOpen(which,open){
  localStorage.setItem('kreta2026_offline_'+which+'_legend',open?'1':'0');
 }
 function initLegendToggles(){
- const top=localStorage.getItem('kreta2026_offline_top_legend')==='1';
- const bottom=localStorage.getItem('kreta2026_offline_bottom_legend')==='1';
+ const top=false;
+ const bottom=false;
  document.getElementById('topLegendBtn').onclick=function(){setLegendOpen('top',document.getElementById('mapPanel').classList.contains('collapsed'))};
  document.getElementById('bottomLegendBtn').onclick=function(){setLegendOpen('bottom',document.getElementById('info').classList.contains('collapsed'))};
+ document.getElementById('closeTopLegend').onclick=function(e){e.stopPropagation();setLegendOpen('top',false)};
+ document.getElementById('closeBottomLegend').onclick=function(e){e.stopPropagation();setLegendOpen('bottom',false)};
  setLegendOpen('top',top); setLegendOpen('bottom',bottom);
 }
 function refreshAll(){renderControls();renderMap();renderPlanner();renderRoute();renderRecommender()}
