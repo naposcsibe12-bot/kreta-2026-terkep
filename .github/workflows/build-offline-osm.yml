@@ -19,9 +19,9 @@ jobs:
 
       - name: Install PMTiles CLI
         run: |
-          go install github.com/protomaps/go-pmtiles@latest
-          test -x "$(go env GOPATH)/bin/pmtiles"
-          echo "PMTiles installed at $(go env GOPATH)/bin/pmtiles"
+          set -euo pipefail
+          curl -fsSL https://github.com/protomaps/go-pmtiles/releases/download/v1.22.3/go-pmtiles_1.22.3_Linux_x86_64.tar.gz | tar -xz -C /usr/local/bin pmtiles
+          pmtiles version
 
       - name: Find latest Protomaps OSM build
         id: source
@@ -44,7 +44,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p offline-assets
-          pmtiles extract "${{ steps.source.outputs.url }}" offline-assets/crete.pmtiles             --bbox="23.15,34.72,26.78,35.72"             --maxzoom=14             --overfetch=0
+          pmtiles extract "${{ steps.source.outputs.url }}" offline-assets/crete.pmtiles             --bbox="23.15,34.72,26.78,35.72"             --maxzoom=13             --overfetch=0
           test -s offline-assets/crete.pmtiles
           ls -lh offline-assets/crete.pmtiles
 
@@ -67,7 +67,7 @@ jobs:
             "source": "${{ steps.source.outputs.url }}",
             "region": "Crete",
             "bbox": [23.15, 34.72, 26.78, 35.72],
-            "maxzoom": 14,
+            "maxzoom": 13,
             "format": "PMTiles / Shortbread",
             "attribution": "© OpenStreetMap contributors"
           }
