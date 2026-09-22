@@ -32,7 +32,7 @@ body{overflow:hidden}
 .ctrl{border:1px solid #d6dee3;background:#fff;border-radius:7px;padding:7px 3px;font-size:9px;font-weight:900}
 .ctrl.active{background:var(--nav);color:#fff;border-color:var(--nav)}
 .mapActions{display:flex;gap:5px;padding:6px;border-top:1px solid var(--line)}
-.mapActions button{flex:1;border:1px solid #d6dee3;background:#fff;border-radius:8px;padding:7px 3px;font-size:8px;font-weight:900}
+.mapActions button{flex:1;border:1px solid #d6dee3;background:#fff;border-radius:8px;padding:7px 3px;font-size:8px;font-weight:900}.legendToggles{position:absolute;z-index:30;right:8px;top:118px;display:flex;flex-direction:column;gap:6px}.legendToggle{border:1px solid #cbd6dc;background:rgba(255,255,255,.96);border-radius:10px;box-shadow:0 2px 9px #0003;padding:8px 10px;font-size:10px;font-weight:900;color:#12384a;min-width:82px}.legendToggle.active{background:#12384a;color:#fff;border-color:#12384a}.mapPanel.collapsed,.info.collapsed{display:none!important}@media(max-width:700px){.legendToggles{top:112px;right:7px}.legendToggle{padding:9px 10px;font-size:10px;min-width:82px}}
 .googleHint{margin:7px 0 0;background:#eef5f7;border-radius:8px;padding:8px;font-size:9px;line-height:1.35}.googleHint b{font-size:10px}
 .info{position:absolute;left:8px;right:8px;bottom:8px;max-height:34%;overflow:auto;background:#fff;border-radius:12px;box-shadow:0 3px 18px #0004;padding:9px}
 .info h3{margin:0 0 3px;font-size:14px}.info p{margin:0 0 5px;font-size:10px;color:#65737c}
@@ -75,14 +75,14 @@ body{overflow:hidden}
 <main class="view">
 <section id="map" class="screen active">
 <div class="mapWrap">
-<div id="mapCanvas" class="mapCanvas"></div><svg id="svg" class="mapSvg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" style="display:none"></svg><div class="mapAttribution">© OpenStreetMap contributors · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">ODbL</a></div>
-<div class="mapPanel">
+<div id="mapCanvas" class="mapCanvas"></div><svg id="svg" class="mapSvg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" style="display:none"></svg><div class="mapAttribution">© OpenStreetMap contributors · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">ODbL</a></div><div class="legendToggles"><button id="topLegendBtn" class="legendToggle" aria-expanded="false">☰ Rétegek</button><button id="bottomLegendBtn" class="legendToggle" aria-expanded="false">ⓘ Infó</button></div>
+<div class="mapPanel collapsed" id="mapPanel">
 <div id="days" class="days"></div>
 <div id="cats" class="cats"></div>
 <div class="mapActions"><button id="allBtn">🗺️ Mind</button><button id="flexBtn">💎 Rugalmas</button><button id="stayBtn">🏠 Szállások</button><button id="gpsBtn">📍 Helyzet</button></div><div class="mapActions"><button id="creteBtn">🏝️ Kréta egész</button><button id="detailBtn">🔍 Részletes nézet</button></div>
 <div class="mapActions"><button id="googleOfflineBtn">🗺️ Google Maps offline</button></div>
 </div>
-<div id="info" class="info"><h3>🗺️ Offline térképcsomag</h3><p>A saját térképréteg és a 188 látnivaló internet nélkül működik. A valódi Google Maps offline térképet az iPhone Google Maps alkalmazásában kell letölteni.</p><div class="googleHint"><b>Google Maps offline használat</b><br>Google Maps → profilkép → <b>Offline térképek</b> → <b>Válassza ki a saját térképét</b>, majd jelöld ki Kréta teljes területét és töltsd le. Ezután a fenti „Google Maps offline” gombbal az alkalmazásba ugorhatsz.</div></div>
+<div id="info" class="info collapsed"><h3>🗺️ Offline térképcsomag</h3><p>A saját térképréteg és a 188 látnivaló internet nélkül működik. A valódi Google Maps offline térképet az iPhone Google Maps alkalmazásában kell letölteni.</p><div class="googleHint"><b>Google Maps offline használat</b><br>Google Maps → profilkép → <b>Offline térképek</b> → <b>Válassza ki a saját térképét</b>, majd jelöld ki Kréta teljes területét és töltsd le. Ezután a fenti „Google Maps offline” gombbal az alkalmazásba ugorhatsz.</div></div>
 </div>
 </section>
 <section id="plan" class="screen"><div id="planOverlay" class="overlay"></div></section>
@@ -218,6 +218,21 @@ function googleUrl(d){const base=baseForDay(d),pts=routeOrder(d),end=d===14?{lat
 function renderRoute(){const o=document.getElementById('routeOverlay'),d=state.routeDay,base=baseForDay(d),pts=routeOrder(d),end=d===14?{name:'Chania repülőtér',lat:35.531,lon:24.15}:base;let prev={lat:base.lat,lon:base.lon},total=0,h='<div class="panelHead">🚗 D'+d+' · útvonal <button class="close" onclick="showScreen(\'map\')">×</button></div><div class="scroller"><div class="daygrid">'+Array.from({length:14},function(_,i){return'<button class="'+(d===i+1?'active':'')+'" data-rd="'+(i+1)+'">D'+(i+1)+'</button>'}).join('')+'</div><div class="routeBtns"><button class="mini '+(state.routeMode==='near'?'primary':'')+'" id="nearMode">📍 Közeli sorrend</button><button class="mini '+(state.routeMode==='manual'?'primary':'')+'" id="manualMode">✋ Saját sorrend</button></div><div class="notice">Offline üzemmód: a km-adatok légvonalas becslések. Közúti navigációhoz internet kell.</div><div class="routeCard"><h4>🏠 Indulás: '+base.name+'</h4>';pts.forEach(function(p,i){const z=dist(prev,{lat:p[1],lon:p[2]});total+=z;h+='<div class="routeRow"><span class="routeNum">'+(i+1)+'</span><span><b>'+p[0]+'</b><br><span class="badge">≈ '+z.toFixed(1)+' km légvonal</span></span>'+(state.routeMode==='manual'?'<button class="mini" data-up="'+i+'">↑</button><button class="mini" data-dn="'+i+'">↓</button>':'')+'</div>';prev={lat:p[1],lon:p[2]}});const back=dist(prev,end);total+=back;h+='<div class="routeRow"><span class="routeNum">↩</span><span><b>'+end.name+'</b><br><span class="badge">≈ '+back.toFixed(1)+' km légvonal</span></span></div><p class="badge">Becsült összes távolság: ≈ '+total.toFixed(0)+' km légvonal</p><div class="routeBtns"><a target="_blank" rel="noopener" href="'+googleUrl(d)+'">🗺️ Google Térkép (internet)</a></div></div></div>';o.innerHTML=h;o.querySelectorAll('[data-rd]').forEach(function(b){b.onclick=function(){state.routeDay=+b.dataset.rd;renderRoute()}});o.querySelector('#nearMode').onclick=function(){state.routeMode='near';renderRoute()};o.querySelector('#manualMode').onclick=function(){state.routeMode='manual';renderRoute()};o.querySelectorAll('[data-up]').forEach(function(b){b.onclick=function(){swapDay(d,+b.dataset.up,+b.dataset.up-1);renderRoute()}});o.querySelectorAll('[data-dn]').forEach(function(b){b.onclick=function(){swapDay(d,+b.dataset.dn,+b.dataset.dn+1);renderRoute()}})}
 function renderRecommender(){const o=document.getElementById('recOverlay'),d=state.recDay,base=baseForDay(d);o.innerHTML='<div class="panelHead">✨ Offline ajánló <button class="close" onclick="showScreen(\'map\')">×</button></div><div class="scroller"><div class="daygrid">'+Array.from({length:14},function(_,i){return'<button class="'+(d===i+1?'active':'')+'" data-cd="'+(i+1)+'">D'+(i+1)+'</button>'}).join('')+'</div><div class="notice">Nincs élő időjárás, forgalom vagy nyitvatartási adat. Az ajánló a helyi adatbázisból számol.</div><div class="base">D'+d+' · indulás: <b>'+base.name+'</b></div><div class="prefs"><select id="recWeather"><option value="good">☀️ Jó idő</option><option value="rain">🌧️ Eső</option><option value="wind">🌬️ Szél</option></select><select id="recDrive"><option value="low">🚶 Kevés autó</option><option value="medium">🚗 Közepes</option><option value="high">🚗 Több vezetés</option></select><select id="recDuration"><option value="short">1–2 óra</option><option value="half">Fél nap</option><option value="full" selected>Egész nap</option></select><select id="recMode"><option value="mixed">Vegyes</option><option value="nature">🌿 Természet</option><option value="culture">🏛️ Kultúra</option><option value="beach">🏖️ Strand</option></select></div><div id="recBody"></div></div>';const sc=o.querySelector('.scroller');function draw(){const pref={weather:sc.querySelector('#recWeather').value,drive:sc.querySelector('#recDrive').value,duration:sc.querySelector('#recDuration').value,mode:sc.querySelector('#recMode').value},recs=recommend(d,pref);sc.querySelector('#recBody').innerHTML=recs.map(function(p,i){const id=PID.get(p[0]);return'<div class="row"><span><b>'+['🥇','🥈','🥉','⭐','⭐'][i]+' '+p[0]+'</b><small>'+C[p[3]][0]+' '+C[p[3]][1]+' · ≈ '+Math.round(dist(base,{lat:p[1],lon:p[2]}))+' km légvonal</small></span><button class="mini" data-ra="'+id+'">＋</button></div>'}).join('');sc.querySelectorAll('[data-ra]').forEach(function(b){b.onclick=function(){addToDay(d,b.dataset.ra);draw();renderPlanner();renderMap()}})}sc.querySelectorAll('[data-cd]').forEach(function(b){b.onclick=function(){state.recDay=+b.dataset.cd;renderRecommender()}});sc.querySelectorAll('#recWeather,#recDrive,#recDuration,#recMode').forEach(function(x){x.onchange=draw});draw()}
 function showScreen(s){state.screen=s;document.querySelectorAll('.screen').forEach(function(x){x.classList.toggle('active',x.id===s)});document.querySelectorAll('.tab').forEach(function(x){x.classList.toggle('active',x.dataset.screen===s)})}
+function setLegendOpen(which,open){
+ const el=which==='top'?document.getElementById('mapPanel'):document.getElementById('info');
+ const btn=which==='top'?document.getElementById('topLegendBtn'):document.getElementById('bottomLegendBtn');
+ el.classList.toggle('collapsed',!open);
+ btn.classList.toggle('active',open);
+ btn.setAttribute('aria-expanded',String(open));
+ localStorage.setItem('kreta2026_offline_'+which+'_legend',open?'1':'0');
+}
+function initLegendToggles(){
+ const top=localStorage.getItem('kreta2026_offline_top_legend')==='1';
+ const bottom=localStorage.getItem('kreta2026_offline_bottom_legend')==='1';
+ document.getElementById('topLegendBtn').onclick=function(){setLegendOpen('top',document.getElementById('mapPanel').classList.contains('collapsed'))};
+ document.getElementById('bottomLegendBtn').onclick=function(){setLegendOpen('bottom',document.getElementById('info').classList.contains('collapsed'))};
+ setLegendOpen('top',top); setLegendOpen('bottom',bottom);
+}
 function refreshAll(){renderControls();renderMap();renderPlanner();renderRoute();renderRecommender()}
 document.querySelectorAll('.tab').forEach(function(b){b.onclick=function(){showScreen(b.dataset.screen)}});
 document.getElementById('allBtn').onclick=function(){state.day=0;state.cat='';state.mode='all';refreshAll()};
@@ -235,6 +250,7 @@ document.getElementById('googleOfflineBtn').onclick=function(){
   window.location.href=appUrl;
 };
 if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('./offline-sw.js',{scope:'./'}).then(function(reg){return reg.update()}).catch(function(){})});
+initLegendToggles();
 refreshAll();
 initOsm();
 </script>
