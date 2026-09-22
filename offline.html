@@ -125,17 +125,17 @@ function addSpecialMarker(x,c){if(!osmMap)return;const el=document.createElement
 function addStayMarker(p,i){if(!osmMap)return;const el=document.createElement('div');el.style.width='32px';el.style.height='32px';el.style.borderRadius='50%';el.style.background='#7b2cbf';el.style.border='2px solid #fff';el.style.boxShadow='0 2px 6px #0006';el.style.display='flex';el.style.alignItems='center';el.style.justifyContent='center';el.style.color='#fff';el.style.fontWeight='900';el.textContent=String(i+1);el.addEventListener('click',function(ev){ev.stopPropagation();showStay(p,i)});const m=new maplibregl.Marker({element:el}).setLngLat([p[2],p[1]]).addTo(osmMap);osmMarkers.push(m)}
 function styleForOsm(layers){
  const ls=layers||[], has=function(x){return ls.includes(x)}, out=[];
- if(has('earth'))out.push({id:'earth',type:'fill',source:'osm', 'source-layer':'earth',paint:{'fill-color':'#dfe7d8'}});
- if(has('land'))out.push({id:'land',type:'fill',source:'osm','source-layer':'land',paint:{'fill-color':'#e7e6d8'}});
- if(has('natural'))out.push({id:'natural',type:'fill',source:'osm','source-layer':'natural',paint:{'fill-color':['match',['get','kind'],['wood','#d7e7cf','forest','#d7e7cf','scrub','#e0e6d6','sand','#f1e4c3','wetland','#dbe7d5'],'#e7eadf'],'fill-opacity':0.72}});
- if(has('landuse'))out.push({id:'landuse',type:'fill',source:'osm','source-layer':'landuse',paint:{'fill-color':['match',['get','kind'],['residential','#ece8dd','farmland','#e7dfc6','forest','#d9e6d1','park','#d5e6cf','garden','#dbe9d4','industrial','#e5dfdf'],'#ecebe4'],'fill-opacity':0.60}});
- if(has('water'))out.push({id:'water',type:'fill',source:'osm','source-layer':'water',filter:['==',['geometry-type'],'Polygon'],paint:{'fill-color':'#a9d8ea','fill-opacity':0.95}});
- if(has('physical_line'))out.push({id:'water-lines',type:'line',source:'osm','source-layer':'physical_line',paint:{'line-color':'#82c6db','line-width':['interpolate',['linear'],['zoom'],6,0.5,12,2.2,14,3]}});
- if(has('roads'))out.push({id:'roads-casing',type:'line',source:'osm','source-layer':'roads',paint:{'line-color':'#a9a49d','line-width':['interpolate',['linear'],['zoom'],6,1,10,2.5,13,5,14,7]}});
- if(has('roads'))out.push({id:'roads',type:'line',source:'osm','source-layer':'roads',paint:{'line-color':['match',['get','kind_detail'],['motorway','#c85b55','trunk','#d27859','primary','#d99b55','secondary','#e1b56f','tertiary','#ead5a4'],'#f4f0e6'],'line-width':['interpolate',['linear'],['zoom'],6,0.6,10,1.3,13,3.2,14,4.5]}});
- if(has('boundaries'))out.push({id:'boundaries',type:'line',source:'osm','source-layer':'boundaries',paint:{'line-color':'#8d989f','line-width':1,'line-dasharray':[3,2]}});
- if(has('buildings'))out.push({id:'buildings',type:'fill',source:'osm','source-layer':'buildings',minzoom:13,paint:{'fill-color':'#d7d3cb','fill-opacity':0.48,'fill-outline-color':'#b8b3aa'}});
- if(has('places'))out.push({id:'places',type:'symbol',source:'osm','source-layer':'places',layout:{'text-field':['coalesce',['get','name'],['get','name_en']], 'text-size':['interpolate',['linear'],['zoom'],7,9,11,12,14,14]},paint:{'text-color':'#4f5d66','text-halo-color':'#fff','text-halo-width':1.2}});
+ // Conservative MapLibre style: simple paint rules only, to avoid style-expression
+ // incompatibilities on iOS Safari and older WebViews.
+ if(has('earth'))out.push({id:'earth',type:'fill',source:'osm','source-layer':'earth',paint:{'fill-color':'#e5e8dc'}});
+ if(has('landuse'))out.push({id:'landuse',type:'fill',source:'osm','source-layer':'landuse',paint:{'fill-color':'#ebe7d8','fill-opacity':0.72}});
+ if(has('landcover'))out.push({id:'landcover',type:'fill',source:'osm','source-layer':'landcover',paint:{'fill-color':'#dfe9d8','fill-opacity':0.60}});
+ if(has('water'))out.push({id:'water',type:'fill',source:'osm','source-layer':'water',paint:{'fill-color':'#a9d8ea','fill-opacity':0.95}});
+ if(has('roads'))out.push({id:'roads-casing',type:'line',source:'osm','source-layer':'roads',paint:{'line-color':'#a8a39a','line-width':1.8,'line-opacity':0.65}});
+ if(has('roads'))out.push({id:'roads',type:'line',source:'osm','source-layer':'roads',paint:{'line-color':'#f0ede5','line-width':1.15,'line-opacity':1}});
+ if(has('boundaries'))out.push({id:'boundaries',type:'line',source:'osm','source-layer':'boundaries',paint:{'line-color':'#89959d','line-width':0.8,'line-opacity':0.55,'line-dasharray':[3,2]}});
+ if(has('buildings'))out.push({id:'buildings',type:'fill',source:'osm','source-layer':'buildings',minzoom:11,paint:{'fill-color':'#d6d1c8','fill-opacity':0.5}});
+ if(has('places'))out.push({id:'places',type:'symbol',source:'osm','source-layer':'places',layout:{'text-field':'{name}','text-size':11},paint:{'text-color':'#4f5d66','text-halo-color':'#ffffff','text-halo-width':1.2}});
  return out
 }
 async function initOsm(){
