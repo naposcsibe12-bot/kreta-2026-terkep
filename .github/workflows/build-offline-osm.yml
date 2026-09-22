@@ -1,0 +1,87 @@
+name: Build offline OSM package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-offline-osm.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PMTiles CLI
+        run: |
+          go install github.com/protomaps/go-pmtiles@latest
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Find latest Protomaps OSM build
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          for offset in 0 1 2 3 4 5 6 7; do
+            DAY="$(date -u -d "-${offset} day" +%Y%m%d)"
+            URL="https://build.protomaps.com/${DAY}.pmtiles"
+            if curl -fsSI --max-time 30 "${URL}" >/dev/null 2>&1; then
+              echo "url=${URL}" >> "$GITHUB_OUTPUT"
+              echo "Using ${URL}"
+              exit 0
+            fi
+          done
+          echo "No recent Protomaps daily build is reachable." >&2
+          exit 1
+
+      - name: Extract Crete OSM basemap
+        run: |
+          set -euo pipefail
+          mkdir -p offline-assets
+          pmtiles extract "${{ steps.source.outputs.url }}" offline-assets/crete.pmtiles             --bbox="23.15,34.72,26.78,35.72"             --maxzoom=14             --overfetch=0
+          test -s offline-assets/crete.pmtiles
+          ls -lh offline-assets/crete.pmtiles
+
+      - name: Bundle offline map libraries
+        run: |
+          set -euo pipefail
+          TMP="$(mktemp -d)"
+          npm --prefix "$TMP" init -y >/dev/null 2>&1
+          npm --prefix "$TMP" install --no-audit --no-fund maplibre-gl@5.6.0 pmtiles@4.2.0
+          cp "$TMP/node_modules/maplibre-gl/dist/maplibre-gl.js" offline-assets/maplibre-gl.js
+          cp "$TMP/node_modules/maplibre-gl/dist/maplibre-gl.css" offline-assets/maplibre-gl.css
+          cp "$TMP/node_modules/pmtiles/dist/pmtiles.js" offline-assets/pmtiles.js
+          ls -lh offline-assets/maplibre-gl.js offline-assets/maplibre-gl.css offline-assets/pmtiles.js
+
+      - name: Write OSM package metadata
+        shell: bash
+        run: |
+          cat > offline-assets/osm-package.json <<EOF
+          {
+            "source": "${{ steps.source.outputs.url }}",
+            "region": "Crete",
+            "bbox": [23.15, 34.72, 26.78, 35.72],
+            "maxzoom": 14,
+            "format": "PMTiles / Shortbread",
+            "attribution": "© OpenStreetMap contributors"
+          }
+          EOF
+
+      - name: Commit offline OSM package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add offline-assets
+          if git diff --cached --quiet; then
+            echo "No offline OSM changes to commit."
+            exit 0
+          fi
+          git commit -m "Offline OSM basemap for Crete"
+          git push
